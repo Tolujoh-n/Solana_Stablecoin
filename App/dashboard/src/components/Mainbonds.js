@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import web3 from "../web3";
+import { Connection, PublicKey } from "@solana/web3.js";
+
 import "./dashboard/dashboard.css";
 import "./mainbonds.css";
 import Innerbonds from "./dashboard/Innerbonds";
@@ -7,6 +8,9 @@ import Statistics from "./dashboard/Statistics";
 import Managesol from "./mainbondbuttons/Managesol";
 import SellModal from "./mainbondbuttons/SellModal";
 import BuyModal from "./mainbondbuttons/BuyModal";
+
+// Initialize Connection object
+const connection = new Connection("https://devnet.solana.com");
 
 const Mainbonds = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -16,11 +20,9 @@ const Mainbonds = () => {
 
   useEffect(() => {
     const checkWalletConnection = async () => {
-      if (web3.currentProvider) {
+      if (window.solana?.isPhantom) {
         try {
-          await web3.currentProvider.request({ method: "eth_requestAccounts" });
-          const accounts = await web3.eth.getAccounts();
-          const isConnected = accounts.length > 0;
+          const isConnected = window.solana.isConnected;
           setIsWalletConnected(isConnected);
         } catch (error) {
           console.error("Failed to connect the wallet:", error);
@@ -58,24 +60,12 @@ const Mainbonds = () => {
   const handleBuySubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    // For example, you can get the form data and handle the buy process
-    // const formData = new FormData(e.target);
-    // const amount = formData.get("amount");
-    // const address = formData.get("address");
-    // Perform the buy operation with 'amount' and 'address' data
-    // Close the modal
     handleCloseBuyModal();
   };
 
   const handleSellSubmit = (e) => {
     e.preventDefault();
     // Add your form submission logic here
-    // For example, you can get the form data and handle the buy process
-    // const formData = new FormData(e.target);
-    // const amount = formData.get("amount");
-    // const address = formData.get("address");
-    // Perform the buy operation with 'amount' and 'address' data
-    // Close the modal
     handleCloseSellModal();
   };
 
@@ -122,3 +112,4 @@ const Mainbonds = () => {
 };
 
 export default Mainbonds;
+

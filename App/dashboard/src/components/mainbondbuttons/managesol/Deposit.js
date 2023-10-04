@@ -4,9 +4,14 @@ const Deposit = ({ handleSubmit, onClose }) => {
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault(); // prevent the default form submission
+    handleSubmit(); // call the handleSubmit function passed as prop
+  };
+
   return (
     <div className="maincard">
-      <div className="stake">
+      {/* <div className="stake">
         <div className="col-md-12 mb-3">
           <form>
             <div className="form-group">
@@ -36,24 +41,24 @@ const Deposit = ({ handleSubmit, onClose }) => {
             </div>
           </form>
         </div>
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <p>
           <b>Mint SOLT tokens: </b>0.00
         </p>
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <input type="checkbox" id="red" name="deposit" value="red" checked />
         <label for="red">Deposit tokens in a balanced ratio</label>
       </div>
       <div>
         <input type="checkbox" id="blue" name="stake" value="blue" checked />
         <label for="blue">Stake SOLT tokens in Curve gauge</label>
-      </div>
+      </div> */}
 
-      <details>
+      {/* <details>
         <summary id="pooldetails">POOL DETAILS</summary>
         <div>
           <p>
@@ -72,7 +77,7 @@ const Deposit = ({ handleSubmit, onClose }) => {
             <b>bSUSD LP APR: </b>0.01%
           </p>
         </div>
-      </details>
+      </details> */}
 
       <br />
       <button
@@ -83,7 +88,7 @@ const Deposit = ({ handleSubmit, onClose }) => {
       >
         Cancel
       </button>
-      <button style={submitbut} type="submit" className="button-style">
+      <button style={submitbut} type="submit" className="button-style" onClick={handleFormSubmit}> 
         Confirm
       </button>
     </div>

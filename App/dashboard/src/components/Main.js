@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import web3 from "../web3"; // Import the web3 instance
+import { Connection, PublicKey } from "@solana/web3.js";
 import "./dashboard/dashboard.css";
 import Stack from "./dashboard/Stack";
 import Pool from "./dashboard/Pool";
@@ -9,22 +9,33 @@ import Statistics from "./dashboard/Statistics";
 
 const Main = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState(null);
 
   useEffect(() => {
     const checkWalletConnection = async () => {
-      if (web3.currentProvider) {
-        try {
-          // Request user permission to connect the wallet
-          await web3.currentProvider.request({ method: "eth_requestAccounts" });
+      // This assumes the window object has already been extended with the Phantom wallet.
+      // Note that the window object may not be immediately available on page load.
+      if ("solana" in window) {
+        const provider = window.solana;
+        if (provider.isPhantom) {
+          try {
+            // Request user permission to connect the wallet
+            await provider.connect();
 
-          // Check the connection status or Ethereum address availability in the web3 instance
-          const accounts = await web3.eth.getAccounts();
-          const isConnected = accounts.length > 0;
+            // Check the connection status or Solana address availability in the provider instance
+            const isConnected = provider.isConnected;
+            setIsWalletConnected(isConnected);
 
-          setIsWalletConnected(isConnected);
-        } catch (error) {
-          console.error("Failed to connect the wallet:", error);
+            // Get wallet public key
+            if (isConnected) {
+              setWalletAddress(provider.publicKey.toString());
+            }
+          } catch (error) {
+            console.error("Failed to connect the wallet:", error);
+          }
         }
+      } else {
+        console.log("Please install Phantom Wallet extension.");
       }
     };
 
@@ -47,10 +58,7 @@ const Main = () => {
               <Pool handleSubmit={handleSubmit} />
               <Stack handleSubmit={handleSubmit} />
 
-
               <Statistics />
-
-              
             </div>  
           </div>
         </div>
@@ -62,3 +70,4 @@ const Main = () => {
 };
 
 export default Main;
+

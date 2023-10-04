@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 
-const Withdraw = ({ handleSubmit, onClose }) => {
+const DEPOSIT2 = ({ handleSubmit, onClose }) => {
   const [selectedOption, setSelectedOption] = useState("option3");
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+  };
+
+  const handleFormSubmit = (e) => {
+    console.log("handleFormSubmit");
+    e.preventDefault(); // prevent the default form submission
+    handleSubmit(); // call the handleSubmit function passed as prop
   };
 
   const [field1, setField1] = useState("");
@@ -72,18 +78,18 @@ const Withdraw = ({ handleSubmit, onClose }) => {
         <div className="paragraph-container">
           {selectedOption === "option1" && (
             <p>
-              <b>Withdraw: </b>0.00 bSUSD
+              <b>Deposit: </b>0.00 bSUSD
             </p>
           )}
           {selectedOption === "option2" && (
             <p>
-              <b>Withdraw: </b>0.00 SUSD
+              <b>Deposit: </b>0.00 SUSD
             </p>
           )}
           {selectedOption === "option3" && (
             <p>
               {" "}
-              <b>Withdraw: </b>0.00 bSUSD + 0.00 SUSD(default).
+              <b>Deposit: </b>0.00 bSUSD + 0.00 SUSD(default).
             </p>
           )}
         </div>
@@ -119,14 +125,14 @@ const Withdraw = ({ handleSubmit, onClose }) => {
       >
         Back
       </button>
-      <button style={submitbut} type="submit" className="button-style">
+      <button style={submitbut} type="submit" onClick={handleFormSubmit} className="button-style"> 
         Approve
       </button>
     </div>
   );
 };
 
-export default Withdraw;
+export default DEPOSIT2;
 
 const cancelbut = {
   /* Your button style here */

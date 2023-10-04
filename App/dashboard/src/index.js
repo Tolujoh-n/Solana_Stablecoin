@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import * as buffer from 'buffer';
+import { Buffer as BufferPackage } from 'buffer';
+
+window.Buffer = window.Buffer || BufferPackage;
+window.Buffer.isBuffer = BufferPackage.isBuffer;
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -6,6 +6,7 @@ import Mainbonds from "./components/Mainbonds";
 import Riskytroves from "./components/Riskytroves";
 import Nowallet from "./components/Nowallet";
 
+
 import "./assets/css/font-awesome.min.css";
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/magnific-popup.css";
@@ -13,7 +14,10 @@ import "./assets/css/select2.min.css";
 import "./assets/css/style.css";
 import "./assets/css/skins/orange.css";
 
-import web3 from "./web3"; // Import the web3 instance
+import { Connection, PublicKey } from "@solana/web3.js";
+
+// Initialize Connection object
+const connection = new Connection("https://devnet.solana.com");
 
 const App = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -21,17 +25,14 @@ const App = () => {
 
   useEffect(() => {
     const checkWalletConnection = async () => {
-      if (web3.currentProvider) {
+      if (window.solana?.isPhantom) {
         try {
-          // Request user permission to connect the wallet
-          await web3.currentProvider.request({ method: "eth_requestAccounts" });
-
-          // Check the connection status or Ethereum address availability in the web3 instance
-          const accounts = await web3.eth.getAccounts();
-          const isConnected = accounts.length > 0;
+          // Check the connection status or Solana address availability in the Phantom Wallet
+          const isConnected = window.solana.isConnected;
+          const publicKey = window.solana.publicKey.toString();
 
           setIsWalletConnected(isConnected);
-          setWalletAddress(accounts[0]); // Set the wallet address
+          setWalletAddress(publicKey); // Set the wallet address
         } catch (error) {
           console.error("Failed to connect the wallet:", error);
         }
@@ -42,22 +43,25 @@ const App = () => {
   }, []);
 
   const connectWallet = () => {
-    if (web3.currentProvider) {
-      web3.currentProvider
-        .request({ method: "eth_requestAccounts" })
-        .then((accounts) => {
+    if (window.solana?.isPhantom) {
+      window.solana
+        .connect()
+        .then(() => {
           setIsWalletConnected(true);
-          setWalletAddress(accounts[0]);
+          setWalletAddress(window.solana.publicKey.toString());
         })
         .catch((error) => {
           console.log(error);
         });
-      } else {
-        window.open("https://metamask.io/download.html", "_blank");
-      }
+    } else {
+      window.open("https://phantom.app/", "_blank");
+    }
   };
 
   const disconnectWallet = () => {
+    if (window.solana?.isPhantom) {
+      window.solana.disconnect();
+    }
     setIsWalletConnected(false);
     setWalletAddress("");
   };
@@ -87,3 +91,4 @@ const App = () => {
 };
 
 export default App;
+

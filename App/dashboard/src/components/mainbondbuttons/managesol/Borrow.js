@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
-const Unstake = ({ handleSubmit, onClose }) => {
+const BORROW = ({ handleSubmit, onClose }) => {
   const [field1, setField1] = useState("");
+
+  const handleFormSubmit = (e) => {
+    console.log("handleFormSubmit");
+    e.preventDefault(); // prevent the default form submission
+    handleSubmit(); // call the handleSubmit function passed as prop
+  };
 
   return (
     <div className="maincard">
@@ -10,7 +16,7 @@ const Unstake = ({ handleSubmit, onClose }) => {
           <form>
             <div className="form-group">
               <label className="css-1owdu0o">
-                <div className="css-zkfaav">Staked LP Tokens</div>
+                <div className="css-zkfaav">Wallet LP Tokens</div>
               </label>
               <input
                 type="number"
@@ -26,19 +32,14 @@ const Unstake = ({ handleSubmit, onClose }) => {
       </div>
 
       <div>
-        <h5>Rewards</h5>
         <p>
-          <b>SUSD: </b>0.00
-        </p>
-        <p>
-          <b>bSUSD LP APR: </b>0.01%
+          <b>bSUSD LP APR : </b>0.00%
         </p>
       </div>
 
       <p>
-        Your staked LP tokens will be unstaked from the bSUSD Curve gauge and
-        moved into your wallet. Pending rewards will also be claimed and moved
-        into your wallet.
+        Your LP tokens will be staked in the bSUSD Curve gauge to earn protocol
+        fees and Curve rewards.
       </p>
 
       <br />
@@ -50,14 +51,14 @@ const Unstake = ({ handleSubmit, onClose }) => {
       >
         Back
       </button>
-      <button style={submitbut} type="submit" className="button-style">
-        Confirm
+      <button style={submitbut} type="submit" onClick={handleFormSubmit} className="button-style">
+        Approve
       </button>
     </div>
   );
 };
 
-export default Unstake;
+export default BORROW;
 
 const cancelbut = {
   /* Your button style here */
